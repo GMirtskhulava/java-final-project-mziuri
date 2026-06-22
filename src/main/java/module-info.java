@@ -11,4 +11,6 @@ module org.example.finalproject {
 
     opens org.example.finalproject to javafx.fxml;
     exports org.example.finalproject;
+    exports org.example.finalproject.controllers;
+    opens org.example.finalproject.controllers to javafx.fxml;
 }

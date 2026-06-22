@@ -77,11 +77,20 @@ public class Utils {
             case "friends-page":
                 winTitle.append(" | Friends");
                 break;
+            case "games-page":
+                winTitle.append(" | Games");
+                break;
             case "settings-page":
                 winTitle.append(" | Settings");
                 break;
             case "search-page":
                 winTitle.append(" | Search");
+                break;
+            case "pong-game":
+                winTitle.append(" | Pong");
+                break;
+            case "mysql-connect":
+                winTitle.append(" | MySQL");
                 break;
             default:
                 break;
@@ -111,7 +120,7 @@ public class Utils {
     //     stage.setTitle(winTitle.toString());
     // }
 
-    protected static void serializeObject(Object object, String path) throws IOException {
+    public static void serializeObject(Object object, String path) throws IOException {
         FileOutputStream fileOutputStream = new FileOutputStream("data\\"+path);
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
         objectOutputStream.writeObject(object);

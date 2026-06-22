@@ -14,60 +14,40 @@ import java.util.Scanner;
 public class SocNetApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException, SQLException {
+        stage.setTitle("SocNet | Configuration");
+        FXMLLoader fxmlLoader = new FXMLLoader(SocNetApplication.class.getResource("mysql-connect.fxml"));
 
         try {
             MySQLConfig config = (MySQLConfig) Utils.deserializeObject("mysql.ser");
 
-            while(config == null) {
-                Scanner input = new Scanner(System.in);
-                System.out.print("Enter MySQL username: ");
-                String username = input.nextLine();
+            if(config == null) {
+                Scene scene = new Scene(fxmlLoader.load(), 1200, 675);
+                stage.setScene(scene);
+                stage.show();
+                return;
+            }
+            else {
+                MySQL.setPort(config.getPort());
+                MySQL.setUsername(config.getUsername());
+                MySQL.setPassword(config.getPassword());
 
-                System.out.print("Enter MySQL password: ");
-                String password = input.nextLine();
-
-                if(username.isEmpty() || password.isEmpty()) {
-                    System.out.println("Enter Username and password!!!");
-                    return;
-                }
-
-                MySQL.setUsername(username);
-                MySQL.setPassword(password);
-
-                try {
-                    MySQL.ConnectToDatabase();
-
-                    config = new MySQLConfig(username, password);
-                    Utils.serializeObject(config, "mysql.ser");
-
-                    System.out.println("MySQL setup saved successfully.");
-                } catch (SQLException e) {
-                    System.out.println("Cannot connect to MySQL:\n\t" + e.getMessage());
-                    System.out.println("Try again");
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                MySQL.ConnectToDatabase();
+                MySQL.InitDB();
+                MySQL.initTestData();
             }
 
-            MySQL.setUsername(config.getUsername());
-            MySQL.setPassword(config.getPassword());
-
-            MySQL.ConnectToDatabase();
-            MySQL.InitDB();
-
-        } catch (ClassNotFoundException | IOException e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
-            Utils.serializeObject(null, "mysql.ser");
-            System.out.println("!!!!! RESTART APPLICATION !!!!!");
+            Scene scene = new Scene(fxmlLoader.load(), 1200, 675);
+            stage.setScene(scene);
+            stage.show();
             return;
-        } catch (SQLException e) {
-            System.out.println("[MySQL] DB error: " + e.getMessage());
         }
 
 
         new Mailer();
         //
-        FXMLLoader fxmlLoader = new FXMLLoader(SocNetApplication.class.getResource("login-page.fxml"));
+        fxmlLoader = new FXMLLoader(SocNetApplication.class.getResource("login-page.fxml"));
         stage.setTitle("SocNet | Login");
 
         try {
@@ -84,7 +64,9 @@ public class SocNetApplication extends Application {
                     String firstName = resultSet.getString("firstname");
                     String lastName = resultSet.getString("lastname");
                     String contactInfo1 = resultSet.getString("contactInfo");
-                    User.currentUser = new User(ID, firstName, lastName, contactInfo1);
+                    String bio = resultSet.getString("bio");
+                    int totalPongScores = resultSet.getInt("totalPongScores");
+                    User.currentUser = new User(ID, firstName, lastName, contactInfo1, bio, totalPongScores);
                     fxmlLoader = new FXMLLoader(SocNetApplication.class.getResource("main-page.fxml"));
                     stage.setTitle("SocNet | Main");
                 }
@@ -104,7 +86,7 @@ public class SocNetApplication extends Application {
             System.out.println("[Start | SQL Check]: Exception while checking user & token in DB");
             System.out.println(e.getMessage());
         } finally {
-            Scene scene = new Scene(fxmlLoader.load(), 1200, 800);
+            Scene scene = new Scene(fxmlLoader.load(), 1200, 675);
             stage.setScene(scene);
             stage.show();
         }

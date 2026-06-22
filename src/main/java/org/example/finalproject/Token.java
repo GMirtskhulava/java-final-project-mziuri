@@ -16,7 +16,7 @@ public class Token implements Serializable {
     private LocalDateTime created;
     public static Token currentToken = null;
 
-    protected Token(int userID) {
+    public Token(int userID) {
         String tmpToken = generateToken(userID);
         setAccessToken(tmpToken);
         LocalDateTime now = LocalDateTime.now();
@@ -117,7 +117,7 @@ public class Token implements Serializable {
         System.out.println(accessToken.toString());
         return accessToken.toString();
     }
-    protected static boolean validateToken(Token token) {
+    public  static boolean validateToken(Token token) {
         if(token == null || token.getAccessToken() == null ||  token.getAccessToken().isEmpty()) return false;
         try {
             PreparedStatement preparedStatement = MySQL.connection.prepareStatement("SELECT id, expirationDate FROM access_tokens WHERE token=?");
@@ -145,13 +145,13 @@ public class Token implements Serializable {
     }
 
 
-    protected static void serializeToken(Token token) throws IOException {
+    public  static void serializeToken(Token token) throws IOException {
         FileOutputStream fileOutputStream = new FileOutputStream("data\\session.ser");
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
         objectOutputStream.writeObject(token);
         objectOutputStream.close();
     }
-    protected static Token deserializeToken() throws IOException, ClassNotFoundException {
+    public  static Token deserializeToken() throws IOException, ClassNotFoundException {
         FileInputStream fileInputStream = new FileInputStream("data\\session.ser");
         ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
         return (Token) objectInputStream.readObject();

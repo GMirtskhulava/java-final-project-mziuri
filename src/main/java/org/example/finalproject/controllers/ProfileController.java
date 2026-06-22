@@ -1,4 +1,4 @@
-package org.example.finalproject;
+package org.example.finalproject.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.application.Platform;
@@ -8,14 +8,15 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.input.MouseEvent;
+import org.example.finalproject.MySQL;
+import org.example.finalproject.User;
+import org.example.finalproject.Utils;
 
-import javax.swing.plaf.nimbus.State;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
@@ -103,6 +104,11 @@ public class ProfileController implements Initializable {
     private void showFriends(ActionEvent event) throws IOException {
         Utils.friendsUserID = User.currentUser.getID();
         Utils.changeScene(event, "friends-page");
+    }
+
+    @FXML
+    private void showGames(ActionEvent event) throws IOException {
+        Utils.changeScene(event, "games-page");
     }
 
     @FXML
@@ -227,10 +233,7 @@ public class ProfileController implements Initializable {
         User user = User.currentUser;
         if(user == null) return "undefined";
 
-        String firstName = user.getFirstname() == null ? "" : user.getFirstname().trim();
-        String lastName = user.getLastname() == null ? "" : user.getLastname().trim();
-        String fullName = (firstName + " " + lastName).trim();
-        return fullName.isEmpty() ? "undefined" : fullName;
+        return user.getFullName();
     }
 
 

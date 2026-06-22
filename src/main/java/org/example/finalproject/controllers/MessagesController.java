@@ -1,4 +1,4 @@
-package org.example.finalproject;
+package org.example.finalproject.controllers;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -17,6 +17,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import org.example.finalproject.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -89,6 +90,11 @@ public class MessagesController implements Initializable {
     private void showFriends(ActionEvent event) throws IOException {
         Utils.friendsUserID = User.currentUser.getID();
         Utils.changeScene(event, "friends-page");
+    }
+
+    @FXML
+    private void showGames(ActionEvent event) throws IOException {
+        Utils.changeScene(event, "games-page");
     }
 
     @FXML
@@ -507,7 +513,7 @@ public class MessagesController implements Initializable {
             return "undefined";
         }
 
-        return getFullName(user.getFirstname(), user.getLastname());
+        return user.getFullName();
     }
     @FXML
     private void handleLogOutButton(ActionEvent event) {

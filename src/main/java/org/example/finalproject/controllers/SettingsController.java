@@ -1,4 +1,4 @@
-package org.example.finalproject;
+package org.example.finalproject.controllers;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -19,6 +19,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
+import org.example.finalproject.MySQL;
+import org.example.finalproject.Token;
+import org.example.finalproject.User;
+import org.example.finalproject.Utils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -109,6 +113,11 @@ public class SettingsController implements Initializable {
     private void showFriends(ActionEvent event) throws IOException {
         Utils.friendsUserID = User.currentUser.getID();
         Utils.changeScene(event, "friends-page");
+    }
+
+    @FXML
+    private void showGames(ActionEvent event) throws IOException {
+        Utils.changeScene(event, "games-page");
     }
 
     @FXML
@@ -285,22 +294,22 @@ public class SettingsController implements Initializable {
             preparedStatement.setInt(1, User.currentUser.getID());
             preparedStatement.executeUpdate();
 
-            preparedStatement = MySQL.connection.prepareStatement("DELETE FROM friends WHERE userID=? OR friendID=?");
+            preparedStatement = MySQL.connection.prepareStatement("DELETE FROM friends WHERE userID = ? OR friendID = ?");
             preparedStatement.setInt(1, User.currentUser.getID());
             preparedStatement.setInt(2, User.currentUser.getID());
             preparedStatement.executeUpdate();
 
-            preparedStatement = MySQL.connection.prepareStatement("DELETE FROM messages WHERE senderID=? OR receiverID=?");
+            preparedStatement = MySQL.connection.prepareStatement("DELETE FROM messages WHERE senderID = ? OR receiverID = ?");
             preparedStatement.setInt(1, User.currentUser.getID());
             preparedStatement.setInt(2, User.currentUser.getID());
             preparedStatement.executeUpdate();
 
-            preparedStatement = MySQL.connection.prepareStatement("DELETE FROM blocks WHERE blockerID=? OR blockedID=?");
+            preparedStatement = MySQL.connection.prepareStatement("DELETE FROM blocks WHERE blockerID= ? OR blockedID = ?");
             preparedStatement.setInt(1, User.currentUser.getID());
             preparedStatement.setInt(2, User.currentUser.getID());
             preparedStatement.executeUpdate();
 
-            preparedStatement = MySQL.connection.prepareStatement("DELETE FROM access_tokens WHERE userID=?");
+            preparedStatement = MySQL.connection.prepareStatement("DELETE FROM access_tokens WHERE userID = ?");
             preparedStatement.setInt(1, User.currentUser.getID());
             preparedStatement.executeUpdate();
 
@@ -326,9 +335,7 @@ public class SettingsController implements Initializable {
             ArrayList<String[]> blockedUsers = new ArrayList<>();
 
             try {
-                PreparedStatement preparedStatement = MySQL.connection.prepareStatement(
-                        "SELECT u.id, u.firstname, u.lastname FROM blocks b JOIN users u ON u.id = b.blockedID WHERE b.blockerID = ? ORDER BY u.firstname, u.lastname"
-                );
+                PreparedStatement preparedStatement = MySQL.connection.prepareStatement("SELECT u.id, u.firstname, u.lastname FROM blocks b JOIN users u ON u.id = b.blockedID WHERE b.blockerID = ? ORDER BY u.firstname, u.lastname");
                 preparedStatement.setInt(1, User.currentUser.getID());
                 ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -445,10 +452,7 @@ public class SettingsController implements Initializable {
         if(user == null)
             return "undefined";
 
-        String firstName = user.getFirstname() == null ? "" : user.getFirstname().trim();
-        String lastName = user.getLastname() == null ? "" : user.getLastname().trim();
-        String fullName = (firstName + " " + lastName).trim();
-        return fullName.isEmpty() ? "undefined" : fullName;
+        return user.getFullName();
     }
 
     @Override

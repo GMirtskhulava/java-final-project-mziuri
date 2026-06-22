@@ -17,17 +17,19 @@ public class User {
     private String gender;
     private String birthDate;
     private String bio;
+    private int totalPongScores;
 
     public static User currentUser = null;
 
 
-    public User(int ID, String firstname, String lastname, String contactInfo, String bio) {
+    public User(int ID, String firstname, String lastname, String contactInfo, String bio, int totalPongScores) {
         setID(ID);
 //        setUsername(username);
         setFirstname(firstname);
         setLastname(lastname);
         setContactInfo(contactInfo);
         setBio(bio);
+        setTotalPongScores(totalPongScores);
 
     }
 
@@ -36,6 +38,12 @@ public class User {
         setFirstname(firstname);
         setLastname(lastname);
 
+    }
+    public User(int ID, String firstname, String lastname, int totalPongScores) {
+        setID(ID);
+        setFirstname(firstname);
+        setLastname(lastname);
+        setTotalPongScores(totalPongScores);
     }
 
     public int getID() {
@@ -94,9 +102,25 @@ public class User {
         this.bio = bio;
     }
 
+    public int getTotalPongScores() {
+        return totalPongScores;
+    }
+
+    public void setTotalPongScores(int totalPongScores) {
+        this.totalPongScores = totalPongScores;
+    }
+
+    public String getFullName() {
+        String firstName = firstname == null ? "" : firstname.trim();
+        String lastName = lastname == null ? "" : lastname.trim();
+
+        String fullName = (firstName + " " + lastName).trim();
+        return fullName.isEmpty() ? "undefined" : fullName;
+    }
+
     //
-    protected static User checkUser(String contactInfo, String password) throws SQLException, ClassNotFoundException, IOException {
-        PreparedStatement preparedStatement = MySQL.connection.prepareStatement("SELECT id, firstname, lastname, contactInfo, bio FROM users WHERE contactInfo = ? AND password = MD5(?);");
+    public static User checkUser(String contactInfo, String password) throws SQLException, ClassNotFoundException, IOException {
+        PreparedStatement preparedStatement = MySQL.connection.prepareStatement("SELECT id, firstname, lastname, contactInfo, bio, totalPongScores FROM users WHERE contactInfo = ? AND password = MD5(?);");
         preparedStatement.setString(1, contactInfo);
         preparedStatement.setString(2, password);
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -106,20 +130,21 @@ public class User {
             String lastName = resultSet.getString("lastname");
             String contactInfo1 = resultSet.getString("contactInfo");
             String bio = resultSet.getString("bio");
+            int totalPongScores = resultSet.getInt("totalPongScores");
+//            System.out.println(totalPongScores);
 
-            return new User(ID, firstName, lastName, contactInfo1, bio);
+            return new User(ID, firstName, lastName, contactInfo1, bio, totalPongScores);
 
         } else {
             throw new AuthUserNotFoundException("User with this credentials not found");
         }
     }
 
-    protected static boolean logoutActiveUser() throws SQLException, IOException {
+    public static void logoutActiveUser() throws SQLException, IOException {
         PreparedStatement preparedStatement = MySQL.connection.prepareStatement("DELETE FROM access_tokens WHERE userID = ? AND token = ?");
         preparedStatement.setInt(1, currentUser.getID());
         preparedStatement.setString(2, Token.currentToken.getAccessToken());
         preparedStatement.execute();
         Token.serializeToken(null);
-        return true;
     }
 }

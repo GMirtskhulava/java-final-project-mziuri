@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" prefHeight="675.0" prefWidth="1200.0" spacing="15.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.finalproject.controllers.MySQLConnectController">
+    <children>
+        <TextField fx:id="portField" maxWidth="320.0" promptText="port" text="3306" />
+        <TextField fx:id="userField" maxWidth="320.0" promptText="user" />
+        <PasswordField fx:id="passwordField" maxWidth="320.0" promptText="password" />
+        <HBox alignment="CENTER" spacing="10.0">
+            <children>
+                <Button mnemonicParsing="false" onAction="#handleExitButton" prefWidth="100.0" styleClass="btn-logout" text="exit" />
+                <Button mnemonicParsing="false" onAction="#handleSaveButton" prefWidth="100.0" styleClass="btn-primary" text="save" />
+            </children>
+        </HBox>
+    </children>
+    <padding><Insets bottom="40.0" left="40.0" right="40.0" top="40.0" /></padding>
+</VBox>

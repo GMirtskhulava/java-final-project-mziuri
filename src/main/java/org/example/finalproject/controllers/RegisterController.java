@@ -1,9 +1,10 @@
-package org.example.finalproject;
+package org.example.finalproject.controllers;
 
 import jakarta.mail.MessagingException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import org.example.finalproject.*;
 import org.example.finalproject.exceptions.AuthUserNotFoundException;
 import org.example.finalproject.exceptions.MailerException;
 

@@ -1,4 +1,4 @@
-package org.example.finalproject;
+package org.example.finalproject.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -6,6 +6,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import org.example.finalproject.Token;
+import org.example.finalproject.User;
+import org.example.finalproject.Utils;
 import org.example.finalproject.exceptions.AuthUserNotFoundException;
 
 import java.io.IOException;

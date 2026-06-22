@@ -1,4 +1,4 @@
-package org.example.finalproject;
+package org.example.finalproject.controllers;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -15,8 +15,11 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.input.MouseEvent;
+import org.example.finalproject.MySQL;
+import org.example.finalproject.Post;
+import org.example.finalproject.User;
+import org.example.finalproject.Utils;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
@@ -77,6 +80,11 @@ public class MainController implements Initializable {
     private void showFriends(ActionEvent event) throws IOException {
         Utils.friendsUserID = User.currentUser.getID();
         Utils.changeScene(event, "friends-page");
+    }
+
+    @FXML
+    private void showGames(ActionEvent event) throws IOException {
+        Utils.changeScene(event, "games-page");
     }
 
     @FXML
@@ -142,10 +150,7 @@ public class MainController implements Initializable {
             return "undefined";
         }
 
-        String firstName = user.getFirstname() == null ? "" : user.getFirstname().trim();
-        String lastName = user.getLastname() == null ? "" : user.getLastname().trim();
-        String fullName = (firstName + " " + lastName).trim();
-        return fullName.isEmpty() ? "undefined" : fullName;
+        return user.getFullName();
     }
     private void loadSuggestions() {
         if(suggestionsBox == null) return;

@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-<BorderPane prefHeight="800.0" prefWidth="1200.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.finalproject.ProfileController">
+<BorderPane prefHeight="675.0" prefWidth="1200.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.finalproject.controllers.ProfileController">
     <top>
         <HBox alignment="CENTER_LEFT" prefHeight="65.0" styleClass="navbar">
             <children>
@@ -37,6 +37,7 @@
                 <Button fx:id="navProfileBtn" alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showProfile" text="Profile"><styleClass><String fx:value="sidebar-btn" /><String fx:value="active-nav" /></styleClass></Button>
                 <Button fx:id="navMessagesBtn" alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showMessages" styleClass="sidebar-btn" text="Messages" />
                 <Button fx:id="navFriendsBtn" alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showFriends" styleClass="sidebar-btn" text="Friends" />
+                <Button fx:id="navGamesBtn" alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showGames" styleClass="sidebar-btn" text="Games" />
                 <Button fx:id="navSettingsBtn" alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showSettings" styleClass="sidebar-btn" text="Settings" />
                 <VBox alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS"><children><Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleLogOutButton" styleClass="btn-logout" text="Log Out" /></children><padding><Insets bottom="20.0" /></padding></VBox>
             </children>

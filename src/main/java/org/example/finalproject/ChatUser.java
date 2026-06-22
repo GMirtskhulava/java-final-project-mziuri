@@ -5,7 +5,7 @@ public class ChatUser {
     private String fullname;
     private String lastMessage;
 
-    ChatUser(int id, String fullname, String lastMessage) {
+    public ChatUser(int id, String fullname, String lastMessage) {
         setId(id);
         setFullname(fullname);
         setLastMessage(lastMessage);
@@ -14,7 +14,6 @@ public class ChatUser {
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
@@ -22,7 +21,6 @@ public class ChatUser {
     public String getFullname() {
         return fullname;
     }
-
     public void setFullname(String fullname) {
         this.fullname = fullname;
     }
@@ -30,7 +28,6 @@ public class ChatUser {
     public String getLastMessage() {
         return lastMessage;
     }
-
     public void setLastMessage(String lastMessage) {
         this.lastMessage = lastMessage;
     }

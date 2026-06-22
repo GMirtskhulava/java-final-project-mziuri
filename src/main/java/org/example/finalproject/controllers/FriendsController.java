@@ -1,4 +1,4 @@
-package org.example.finalproject;
+package org.example.finalproject.controllers;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -12,6 +12,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.input.MouseEvent;
+import org.example.finalproject.MySQL;
+import org.example.finalproject.User;
+import org.example.finalproject.Utils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -72,6 +75,11 @@ public class FriendsController implements Initializable {
     }
 
     @FXML
+    private void showGames(ActionEvent event) throws IOException {
+        Utils.changeScene(event, "games-page");
+    }
+
+    @FXML
     private void showSettings(ActionEvent event) throws IOException {
         Utils.changeScene(event, "settings-page");
     }
@@ -113,10 +121,7 @@ public class FriendsController implements Initializable {
             return "undefined";
         }
 
-        String firstName = user.getFirstname() == null ? "" : user.getFirstname().trim();
-        String lastName = user.getLastname() == null ? "" : user.getLastname().trim();
-        String fullName = (firstName + " " + lastName).trim();
-        return fullName.isEmpty() ? "undefined" : fullName;
+        return user.getFullName();
     }
 
     private void loadFriends() {
