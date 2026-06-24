@@ -222,6 +222,11 @@ public class PongController implements Initializable {
                 }
             }
         }
+        else if(side.equals("red")) {
+            scoreR++;
+            scoreRLabel.setText(""+scoreR);
+        }
+
         if(scoreB%2 == 0) {
             setPaddleHeight(paddleB, paddleBHeigth);
             setPaddleHeight(paddleR, paddleRHeigth);

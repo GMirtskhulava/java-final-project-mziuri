@@ -79,12 +79,6 @@
     -fx-underline: true;
 }
 
-.label-light {
-    -fx-text-fill: #718078;
-    -fx-font-size: 13px;
-}
-
-
 
 .navbar {
     -fx-background-color: #1b4d3e;
@@ -225,6 +219,12 @@
     -fx-text-fill: #2ec4b6;
     -fx-font-size: 12px;
     -fx-font-weight: bold;
+}
+.status-blocked {
+    -fx-text-fill: #bd3131 !important;
+}
+.status-notAvailable{
+    -fx-text-fill: #696969 !important;
 }
 
 .settings-group-title {

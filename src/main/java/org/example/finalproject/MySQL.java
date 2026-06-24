@@ -105,17 +105,24 @@ public class MySQL {
                 "REFERENCES users(id)" +
                 ");");
 
+        st.addBatch("CREATE TABLE IF NOT EXISTS pinned_chats (" +
+                "id INT NOT NULL PRIMARY KEY AUTO_INCREMENT," +
+                "userID INT NOT NULL," +
+                "receiverID INT NOT NULL," +
+                "CONSTRAINT fKey_pins_userID FOREIGN KEY(userID) " +
+                "REFERENCES users(id)," +
+                "CONSTRAINT fKey_pins_receiverID FOREIGN KEY(receiverID) " +
+                "REFERENCES users(id)" +
+                ");");
+
 
         int[] result = st.executeBatch();
-//        try {
-//            ResultSet columns = connection.getMetaData().getColumns(null, "socnet", "users", "totalPongScores");
-//            if(!columns.next()) {
-//                Statement st2 = connection.createStatement();
-//                st2.execute("ALTER TABLE users ADD COLUMN totalPongScores INT DEFAULT 0;");
-//            }
-//        } catch (SQLException e) {
-//            System.out.print(e.getMessage());
-//        }
+        try {
+            Statement st2 = connection.createStatement();
+            st2.execute("ALTER TABLE messages ADD COLUMN seen BOOLEAN DEFAULT false AFTER content;");
+        } catch (SQLException e) {
+            System.out.print(e.getMessage());
+        }
 
         return result;
     }
