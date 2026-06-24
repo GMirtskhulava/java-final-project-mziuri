@@ -67,53 +67,65 @@ public class MessagesController implements Initializable {
     @FXML
     private CheckBox pinCheckBox;
 
+    private int lastMessageID = 0;
+    private boolean pollingMessages = false;
+
     @FXML
     private void openMyProfile(MouseEvent event) throws IOException {
+        stopGettingMessages();
         Utils.profileUserID = User.currentUser.getID();
         Utils.changeSceneFromNode((javafx.scene.Node) event.getSource(), "profile-page");
     }
 
     @FXML
     private void openProfileByID(MouseEvent event, int userID) throws IOException {
+        stopGettingMessages();
         Utils.profileUserID = userID;
         Utils.changeSceneFromNode((javafx.scene.Node) event.getSource(), "profile-page");
     }
 
     @FXML
     private void showFeed(ActionEvent event) throws IOException {
+        stopGettingMessages();
         Utils.changeScene(event, "main-page");
     }
 
     @FXML
     private void showProfile(ActionEvent event) throws IOException {
+        stopGettingMessages();
         Utils.profileUserID = User.currentUser.getID();
         Utils.changeScene(event, "profile-page");
     }
 
     @FXML
     private void showMessages(ActionEvent event) throws IOException {
+        stopGettingMessages();
         Utils.messageUserID = 0;
         Utils.changeScene(event, "messages-page");
     }
 
     @FXML
     private void showFriends(ActionEvent event) throws IOException {
+        stopGettingMessages();
         Utils.friendsUserID = User.currentUser.getID();
         Utils.changeScene(event, "friends-page");
     }
 
     @FXML
     private void showGames(ActionEvent event) throws IOException {
+        stopGettingMessages();
         Utils.changeScene(event, "games-page");
     }
 
     @FXML
     private void showSettings(ActionEvent event) throws IOException {
+        stopGettingMessages();
         Utils.changeScene(event, "settings-page");
     }
 
     @FXML
     private void showSearch(ActionEvent event) throws IOException {
+        stopGettingMessages();
         Utils.searchText = searchField.getText();
         Utils.changeScene(event, "search-page");
     }
@@ -383,6 +395,7 @@ public class MessagesController implements Initializable {
         conversationStatusLabel.getStyleClass().add("status-online");
         selectedUserID = userID;
         selectedUserName = fullname;
+        lastMessageID = 0;
         conversationNameLabel.setText(fullname);
         conversationNameLabel.setOnMouseClicked(event -> {
             try {
@@ -480,7 +493,7 @@ public class MessagesController implements Initializable {
         Thread thread = new Thread(() -> {
             ArrayList<ChatMessage> messages = new ArrayList<>();
             try {
-                PreparedStatement preparedStatement = MySQL.connection.prepareStatement("SELECT senderID, content, seen, createdDate FROM messages WHERE (senderID=? AND receiverID=?) OR (senderID = ? AND receiverID =?) ORDER BY createdDate ASC;");
+                PreparedStatement preparedStatement = MySQL.connection.prepareStatement("SELECT id, senderID, content, seen, createdDate FROM messages WHERE (senderID=? AND receiverID=?) OR (senderID = ? AND receiverID =?) ORDER BY createdDate ASC;");
 
                 preparedStatement.setInt(1, User.currentUser.getID());
                 preparedStatement.setInt(2, userID);
@@ -488,8 +501,13 @@ public class MessagesController implements Initializable {
                 preparedStatement.setInt(4, User.currentUser.getID());
 
                 ResultSet resultSet = preparedStatement.executeQuery();
+                int newestMessageID = 0;
                 while(resultSet.next()) {
+                    newestMessageID = Math.max(newestMessageID, resultSet.getInt("id"));
                     messages.add(new ChatMessage(resultSet.getInt("senderID"), resultSet.getString("content"), resultSet.getBoolean("seen"), resultSet.getString("createdDate")));
+                }
+                if(userID == selectedUserID) {
+                    lastMessageID = newestMessageID;
                 }
 
                 preparedStatement = MySQL.connection.prepareStatement("UPDATE messages SET seen = true WHERE senderID = ? AND receiverID = ?;");
@@ -615,6 +633,48 @@ public class MessagesController implements Initializable {
         }
     }
 
+    private void checkingNewMessages() {
+        if(selectedUserID == 0) return;
+        try {
+            PreparedStatement preparedStatement = MySQL.connection.prepareStatement("SELECT MAX(id) FROM messages WHERE senderID = ? AND receiverID = ?");
+            preparedStatement.setInt(1, selectedUserID);
+            preparedStatement.setInt(2, User.currentUser.getID());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            if(resultSet.next()) {
+                int sqlMessageID = resultSet.getInt(1);
+                if(lastMessageID < sqlMessageID) {
+                    lastMessageID = sqlMessageID;
+                    loadMessages(selectedUserID, selectedUserName);
+                    loadUserList();
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void startGettingMessages() {
+        pollingMessages = true;
+
+        Thread thread = new Thread(() -> {
+            while(pollingMessages) {
+                try {
+                    Thread.sleep(3500); // 3,5 wami
+                    checkingNewMessages();
+                } catch (InterruptedException e) {
+                    pollingMessages = false;
+                }
+            }
+        });
+        thread.setDaemon(true);
+        thread.start();
+    }
+
+    private void stopGettingMessages() {
+        pollingMessages = false;
+    }
 
     private String getFullName(String firstname, String lastname) {
         String firstName = firstname == null ? "" : firstname.trim();
@@ -638,6 +698,7 @@ public class MessagesController implements Initializable {
         if(logoutButtonClicked) return;
         logoutButtonClicked = true;
         try {
+            stopGettingMessages();
             User.logoutActiveUser();
             Utils.changeScene(event, "login-page");
         } catch (SQLException | IOException err) {
@@ -658,6 +719,7 @@ public class MessagesController implements Initializable {
 
         Utils.showFriendRequestsMark(navFriendsBtn);
         loadUserList();
+        startGettingMessages();
     }
 
 }
