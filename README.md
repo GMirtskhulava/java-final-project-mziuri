@@ -58,23 +58,23 @@ At first launch, app opens the MySQL configuration screen. Enter port, user, and
 
 ## Main Features / მთავარი ფუნქციები
 
-- Authentication: login, registration, password recovery by email code, token-based session restore.
+- Authentication: login, registration, password recovery by email code, token-based session restore, 2FA authorization (if enabled)
 - Feed: create posts, view latest posts and shares, like/dislike, share, delete own posts/shares.
 - Profiles: view bio/contact info, posts, shared posts, friend/posts count, message button, block/unblock.
 - Friends: view friends, approve/decline requests, remove friends, respect private friend lists.
 - Messages: chat list, direct chat, unread counters, seen status, pinned chats, automatic polling for new messages.
 - Search: search people and posts, open profiles, send friend requests.
-- Settings: edit profile, password, privacy options, blocked users, account deletion.
+- Settings: edit profile, password, privacy options, blocked users, account deletion, connect account to Google Authenticator wih QRcode (2FA security system)
 - Games: Pong game and leaderboard based on total user score.
 
 
-- ავტორიზაცია: ავტორიზაცია, რეგისტრაცია, პაროლის აღდგენა მეილის კოდით, ტოკენები სესიების აღსადგენად.
+- ავტორიზაცია: ავტორიზაცია, რეგისტრაცია, პაროლის აღდგენა მეილის კოდით, ტოკენები სესიების აღსადგენად, 2FA ავტორიზაცია (თუ ჩართულია პარამეტრებში)
 - მთავარი: პოსტის შექმნა, პოსტებისა და გაზიარებების ნახვა, მოწონება/დაწუნება, პოსტის გაზიარება, საკუთარი პოსტების (მათ შორის გაზიარებულის პოსტების) წაშლა.
 - პროფილები: საკონტაქტო ინფო (მეილი ან ნომერი), ბიო, პოსტები, გაზიარებები, მეგობრების/პოსტების რაოდენობა, შეტყობინების ღილაკი, დაბლოკვა/განბლოკვა
 - მეგობრები: მეგობრების სია, მოთხოვნის დადასტურება/უარყოფა, მეგობრებიდან წაშლა, პრივატული მეგობრების სია.
 - შეტყობინებები: ჩატების სია, წაუკითხავი მესიჯების რაოდენობა, seen სტატუსი, აპინული ჩატები, ახალი შეტყობინებების LIVE მიღება.
 - ძიება: ადამიანებისა და პოსტების ძიება "გასაღები" სიტყვით, პროფილის გახსნა, მეგობრობის გაგზავნა.
-- პარამეტრები: პროფილის, პაროლისა და კონფიდენციალურობის პარამეტრების შეცვლა, დაბლოკილი მომხმარებლების მართვა, ანგარიშის წაშლა.
+- პარამეტრები: პროფილის, პაროლისა და კონფიდენციალურობის პარამეტრების შეცვლა, დაბლოკილი მომხმარებლების მართვა, ანგარიშის წაშლა, Google Authenticator დაკავშირება QR კოდით(2FA დაცვის სისტემა).
 - თამაშები: Pong თამაში და leaderboard.
 
 ## Function Guide / ფუნქციების აღწერა
@@ -117,7 +117,6 @@ At first launch, app opens the MySQL configuration screen. Enter port, user, and
 - `isEmail(String text)` - checks whether text looks like an email address. | ელ .ფოსტის ვალიდურობის შემოწმება
 
 
-
 #### `User`
 
 - Constructors create user objects.
@@ -141,6 +140,19 @@ At first launch, app opens the MySQL configuration screen. Enter port, user, and
 
 - Constructor stores sender ID, content, seen status, and creation date.
 - კონსტრუქტორი ქმნის შეტყობინებების Object-ს
+
+
+#### `ChatMessage`
+
+- Constructor stores sender ID, content, seen status, and creation date.
+- კონსტრუქტორი ქმნის შეტყობინებების Object-ს
+
+#### `GoogleAuth`
+
+- Constructor stores gAuth, secretKey, qrUrl;
+- კონსტრუქტორი ქმნის GoogleAuth ობიექტს ცვლადებით: gAuth, secretKey, qrUrl.
+- `generateGAuth(String userEmauil)` - Set up Google Authenticator: create and return secret code and QR Code | ქმნის და აბრუნებს დაგენერირებულ საიდუმლო და QR კოდებს აპლიკაციაში დასაკავშირებლად.
+- `checkAuthCode(String secretKey, int verificationCode)` - Authorize code | ამოწმებს არგუმენტებში გადმოცემული კოდის 'სისწორეს' და აბრუნებს შესაბამის მნიშვნელობას.  
 
 ### Controllers / კონტროლერები
 

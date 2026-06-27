@@ -219,7 +219,7 @@ public class SettingsController implements Initializable {
         if(!Google2FAKey.isEmpty() && !contactInfo.equals(User.currentUser.getContactInfo())) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR While Saving!");
-            alert.setContentText("Can't change contact information while 2FA authenticator is linked to account!\nTo unlink Google 2FA send request to support - socnetjavafx@gmail.com");
+            alert.setContentText("Can't change contact information while 2FA authenticator is linked to account!\nTo unlink Google 2FA, contact support - socnetjavafx@gmail.com");
             contactInfoField.setText(User.currentUser.getContactInfo());
 
             if(alert.showAndWait().orElse(ButtonType.CANCEL) != ButtonType.OK) {

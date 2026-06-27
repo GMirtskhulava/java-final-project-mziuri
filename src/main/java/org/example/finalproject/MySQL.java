@@ -33,7 +33,9 @@ public class MySQL {
                 "hideContactInfo BOOLEAN NOT NULL DEFAULT FALSE," +
                 "friendListPrivate BOOLEAN NOT NULL DEFAULT FALSE," +
                 "messagesFriendsOnly BOOLEAN NOT NULL DEFAULT FALSE," +
-                "totalPongScores INT DEFAULT 0" +
+                "totalPongScores INT DEFAULT 0," +
+                "totpEnabled BOOLEAN DEFAULT false," +
+                "totpKey VARCHAR(33) DEFAULT ''" +
                 ");");
 
         st.addBatch("CREATE TABLE IF NOT EXISTS access_tokens (" +

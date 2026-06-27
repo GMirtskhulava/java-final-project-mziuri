@@ -76,7 +76,7 @@ public class GAuthCheckController implements Initializable {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Google 2FA Authentication");
         alert.setHeaderText("Lost access to google 2FA code");
-        alert.setContentText("If you lost access - contact with support:\nsocnetjavafx@gmail.com");
+        alert.setContentText("If you lost access - contact support:\nsocnetjavafx@gmail.com");
 
         if(alert.showAndWait().orElse(ButtonType.CANCEL) != ButtonType.OK) {
             return;
@@ -86,7 +86,8 @@ public class GAuthCheckController implements Initializable {
     @FXML
     void navigateToBack(ActionEvent event) {
         try {
-            Utils.changeScene(event, "login-page");
+            if(Utils.gAuthCheckState == 1) Utils.changeScene(event, "settings-page");
+            else Utils.changeScene(event, "login-page");
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
