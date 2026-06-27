@@ -117,12 +117,14 @@ public class MySQL {
 
 
         int[] result = st.executeBatch();
-        try {
-            Statement st2 = connection.createStatement();
-            st2.execute("ALTER TABLE messages ADD COLUMN seen BOOLEAN DEFAULT false AFTER content;");
-        } catch (SQLException e) {
-            System.out.print(e.getMessage());
-        }
+//
+//        try {
+//            Statement st2 = connection.createStatement();
+////            st2.execute("ALTER TABLE users ADD COLUMN totpEnabled BOOLEAN DEFAULT false AFTER messagesFriendsOnly;");
+//            st2.execute("ALTER TABLE users ADD COLUMN totpKey VARCHAR(33) DEFAULT '' AFTER totpEnabled;");
+//        } catch (SQLException e) {
+//            System.out.print(e.getMessage());
+//        }
 
         return result;
     }

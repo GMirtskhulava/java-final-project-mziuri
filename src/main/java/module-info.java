@@ -7,6 +7,8 @@ module org.example.finalproject {
     requires jakarta.mail;
     requires java.desktop;
     requires javafx.graphics;
+    requires googleauth;
+    requires mysql.connector.j;
 
 
     opens org.example.finalproject to javafx.fxml;

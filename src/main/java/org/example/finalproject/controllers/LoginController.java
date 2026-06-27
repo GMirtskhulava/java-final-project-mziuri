@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import org.example.finalproject.MySQL;
 import org.example.finalproject.Token;
 import org.example.finalproject.User;
 import org.example.finalproject.Utils;
@@ -13,6 +14,7 @@ import org.example.finalproject.exceptions.AuthUserNotFoundException;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
@@ -38,9 +40,14 @@ public class LoginController implements Initializable {
             String password = passwordField.getText();
             try {
                 User responseUser = User.checkUser(contactInfo, password);
-                Token.currentToken = new Token(responseUser.getID());
                 User.currentUser = responseUser;
-                Utils.changeScene(event, "main-page");
+                if(responseUser.isTotpEnabled()) {
+                    Utils.changeScene(event, "gauth-check");
+                }
+                else {
+                    Token.currentToken = new Token(responseUser.getID());
+                    Utils.changeScene(event, "main-page");
+                }
 
             } catch (SQLException e) {
                 System.out.println(e.getMessage());

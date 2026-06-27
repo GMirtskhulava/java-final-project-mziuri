@@ -19,6 +19,8 @@ public class Utils {
     public static int friendsUserID = 0;
     public static int messageUserID = 0;
 
+    public static int gAuthCheckState = 0;
+
     public static void showFriendRequestsMark(Button friendsButton) {
         if(friendsButton == null || User.currentUser == null) return;
 

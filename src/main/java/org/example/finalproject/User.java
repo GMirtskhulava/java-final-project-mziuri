@@ -19,6 +19,9 @@ public class User {
     private String bio;
     private int totalPongScores;
 
+    private boolean totpEnabled;
+    private String totpKey;
+
     public static User currentUser = null;
 
 
@@ -30,6 +33,18 @@ public class User {
         setContactInfo(contactInfo);
         setBio(bio);
         setTotalPongScores(totalPongScores);
+
+    }
+    public User(int ID, String firstname, String lastname, String contactInfo, String bio, int totalPongScores, boolean totpEnabled, String totpKey) {
+        setID(ID);
+//        setUsername(username);
+        setFirstname(firstname);
+        setLastname(lastname);
+        setContactInfo(contactInfo);
+        setBio(bio);
+        setTotalPongScores(totalPongScores);
+        setTotpEnabled(totpEnabled);
+        setTotpKey(totpKey);
 
     }
 
@@ -45,6 +60,7 @@ public class User {
         setLastname(lastname);
         setTotalPongScores(totalPongScores);
     }
+
 
     public int getID() {
         return ID;
@@ -105,9 +121,22 @@ public class User {
     public int getTotalPongScores() {
         return totalPongScores;
     }
-
     public void setTotalPongScores(int totalPongScores) {
         this.totalPongScores = totalPongScores;
+    }
+
+    public boolean isTotpEnabled() {
+        return totpEnabled;
+    }
+    public void setTotpEnabled(boolean totpEnabled) {
+        this.totpEnabled = totpEnabled;
+    }
+
+    public String getTotpKey() {
+        return totpKey;
+    }
+    public void setTotpKey(String totpKey) {
+        this.totpKey = totpKey;
     }
 
     public String getFullName() {
@@ -120,7 +149,7 @@ public class User {
 
     //
     public static User checkUser(String contactInfo, String password) throws SQLException, ClassNotFoundException, IOException {
-        PreparedStatement preparedStatement = MySQL.connection.prepareStatement("SELECT id, firstname, lastname, contactInfo, bio, totalPongScores FROM users WHERE contactInfo = ? AND password = MD5(?);");
+        PreparedStatement preparedStatement = MySQL.connection.prepareStatement("SELECT id, firstname, lastname, contactInfo, bio, totalPongScores, totpEnabled, totpKey FROM users WHERE contactInfo = ? AND password = MD5(?);");
         preparedStatement.setString(1, contactInfo);
         preparedStatement.setString(2, password);
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -131,8 +160,12 @@ public class User {
             String contactInfo1 = resultSet.getString("contactInfo");
             String bio = resultSet.getString("bio");
             int totalPongScores = resultSet.getInt("totalPongScores");
-//            System.out.println(totalPongScores);
-
+            boolean totpStatus = resultSet.getBoolean("totpEnabled");
+            if(totpStatus) {
+                String totpSecretKey = resultSet.getString("totpKey");
+                return new User(ID, firstName, lastName, contactInfo1, bio, totalPongScores, totpStatus, totpSecretKey);
+            }
+            // System.out.println(totalPongScores);
             return new User(ID, firstName, lastName, contactInfo1, bio, totalPongScores);
 
         } else {

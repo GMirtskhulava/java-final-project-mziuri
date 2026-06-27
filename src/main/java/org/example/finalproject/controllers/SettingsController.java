@@ -19,10 +19,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
-import org.example.finalproject.MySQL;
-import org.example.finalproject.Token;
-import org.example.finalproject.User;
-import org.example.finalproject.Utils;
+import org.example.finalproject.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -75,6 +72,9 @@ public class SettingsController implements Initializable {
     private CheckBox messagesFriendsOnlyCheckBox;
 
     @FXML
+    private CheckBox google2FAcheckbox;
+
+    @FXML
     private PasswordField passwordField;
 
     @FXML
@@ -85,6 +85,10 @@ public class SettingsController implements Initializable {
 
     @FXML
     private VBox blockedUsersContainer;
+
+
+    @FXML Button setup2FAButton;
+    private String Google2FAKey;
 
 
     @FXML
@@ -130,7 +134,7 @@ public class SettingsController implements Initializable {
     private void loadMySettings() {
         Thread settingsThread = new Thread(() -> {
             try {
-                PreparedStatement preparedStatement = MySQL.connection.prepareStatement("SELECT firstname, lastname, contactInfo, gender, birthDate, bio, hideContactInfo, friendListPrivate, messagesFriendsOnly FROM users WHERE id = ?");
+                PreparedStatement preparedStatement = MySQL.connection.prepareStatement("SELECT firstname, lastname, contactInfo, gender, birthDate, bio, hideContactInfo, friendListPrivate, messagesFriendsOnly, totpEnabled, totpKey FROM users WHERE id = ?");
                 preparedStatement.setInt(1, User.currentUser.getID());
                 ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -144,6 +148,10 @@ public class SettingsController implements Initializable {
                     boolean hideContactInfo = resultSet.getBoolean("hideContactInfo");
                     boolean friendListPrivate = resultSet.getBoolean("friendListPrivate");
                     boolean messagesFriendsOnly = resultSet.getBoolean("messagesFriendsOnly");
+                    boolean enabled2FA = resultSet.getBoolean("totpEnabled");
+                    String secretKey = resultSet.getString("totpKey");
+
+                    Google2FAKey = secretKey;
 
                     Platform.runLater(() -> {
                         firstnameField.setText(firstname);
@@ -153,11 +161,15 @@ public class SettingsController implements Initializable {
                         hideContactInfoCheckBox.setSelected(hideContactInfo);
                         friendListPrivateCheckBox.setSelected(friendListPrivate);
                         messagesFriendsOnlyCheckBox.setSelected(messagesFriendsOnly);
+                        google2FAcheckbox.setSelected(enabled2FA);
                         if("Female".equalsIgnoreCase(gender)) {
                             femaleGenderRB.setSelected(true);
                         } else {
                             maleGenderRB.setSelected(true);
                         }
+
+                        if(Google2FAKey.isEmpty()) google2FAcheckbox.setVisible(false);
+                        else setup2FAButton.setText("Delete 2FA");
 
                         if(birthDate != null && !birthDate.isEmpty()) {
                             birthDateField.setValue(LocalDate.parse(birthDate));
@@ -193,6 +205,7 @@ public class SettingsController implements Initializable {
         boolean hideContactInfo = hideContactInfoCheckBox.isSelected();
         boolean friendListPrivate = friendListPrivateCheckBox.isSelected();
         boolean messagesFriendsOnly = messagesFriendsOnlyCheckBox.isSelected();
+        boolean enabled2FA = google2FAcheckbox.isSelected();
         String password = passwordField.getText();
         String confirmPassword = confirmPasswordField.getText();
         LocalDate birthDate = birthDateField.getValue();
@@ -200,6 +213,18 @@ public class SettingsController implements Initializable {
         if(firstname.isEmpty() || lastname.isEmpty() || gender.isEmpty() || contactInfo.isEmpty() || birthDate == null) {
             settingsMessageLabel.setText("Please fill all profile fields.");
             saveButtonClicked = false;
+            return;
+        }
+
+        if(!Google2FAKey.isEmpty() && !contactInfo.equals(User.currentUser.getContactInfo())) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR While Saving!");
+            alert.setContentText("Can't change contact information while 2FA authenticator is linked to account!\nTo unlink Google 2FA send request to support - socnetjavafx@gmail.com");
+            contactInfoField.setText(User.currentUser.getContactInfo());
+
+            if(alert.showAndWait().orElse(ButtonType.CANCEL) != ButtonType.OK) {
+                return;
+            }
             return;
         }
 
@@ -221,7 +246,7 @@ public class SettingsController implements Initializable {
             PreparedStatement preparedStatement;
 
             if(password.isEmpty()) {
-                preparedStatement = MySQL.connection.prepareStatement("UPDATE users SET firstname = ?, lastname = ?, gender = ?, birthDate = ?, contactInfo = ?, bio = ?, hideContactInfo = ?, friendListPrivate = ?, messagesFriendsOnly = ? WHERE id = ?");
+                preparedStatement = MySQL.connection.prepareStatement("UPDATE users SET firstname = ?, lastname = ?, gender = ?, birthDate = ?, contactInfo = ?, bio = ?, hideContactInfo = ?, friendListPrivate = ?, messagesFriendsOnly = ?, totpEnabled = ? WHERE id = ?");
                 preparedStatement.setString(1, firstname);
                 preparedStatement.setString(2, lastname);
                 preparedStatement.setString(3, gender);
@@ -231,20 +256,22 @@ public class SettingsController implements Initializable {
                 preparedStatement.setBoolean(7, hideContactInfo);
                 preparedStatement.setBoolean(8, friendListPrivate);
                 preparedStatement.setBoolean(9, messagesFriendsOnly);
-                preparedStatement.setInt(10, User.currentUser.getID());
-            } else {
-                preparedStatement = MySQL.connection.prepareStatement("UPDATE users SET firstname = ?, lastname = ?, gender = ?, birthDate = ?, contactInfo = ?, bio = ?, hideContactInfo = ?, friendListPrivate = ?, messagesFriendsOnly = ?, password = MD5(?) WHERE id = ?");
-                preparedStatement.setString(1, firstname);
-                preparedStatement.setString(2, lastname);
-                preparedStatement.setString(3, gender);
-                preparedStatement.setObject(4, birthDate);
-                preparedStatement.setString(5, contactInfo);
-                preparedStatement.setString(6, bio);
-                preparedStatement.setBoolean(7, hideContactInfo);
-                preparedStatement.setBoolean(8, friendListPrivate);
-                preparedStatement.setBoolean(9, messagesFriendsOnly);
-                preparedStatement.setString(10, password);
+                preparedStatement.setBoolean(10, enabled2FA);
                 preparedStatement.setInt(11, User.currentUser.getID());
+            } else {
+                preparedStatement = MySQL.connection.prepareStatement("UPDATE users SET firstname = ?, lastname = ?, gender = ?, birthDate = ?, contactInfo = ?, bio = ?, hideContactInfo = ?, friendListPrivate = ?, messagesFriendsOnly = ?, totpEnabled = ?, password = MD5(?) WHERE id = ?");
+                preparedStatement.setString(1, firstname);
+                preparedStatement.setString(2, lastname);
+                preparedStatement.setString(3, gender);
+                preparedStatement.setObject(4, birthDate);
+                preparedStatement.setString(5, contactInfo);
+                preparedStatement.setString(6, bio);
+                preparedStatement.setBoolean(7, hideContactInfo);
+                preparedStatement.setBoolean(8, friendListPrivate);
+                preparedStatement.setBoolean(9, messagesFriendsOnly);
+                preparedStatement.setBoolean(10, enabled2FA);
+                preparedStatement.setString(11, password);
+                preparedStatement.setInt(12, User.currentUser.getID());
             }
 
             int rows = preparedStatement.executeUpdate();
@@ -358,11 +385,7 @@ public class SettingsController implements Initializable {
                     }
 
                     for(String[] user : blockedUsers) {
-                        blockedUsersContainer.getChildren().add(makeBlockedUserRow(
-                                Integer.parseInt(user[0]),
-                                user[1],
-                                user[2]
-                        ));
+                        blockedUsersContainer.getChildren().add(makeBlockedUserRow(Integer.parseInt(user[0]), user[1], user[2]));
                     }
                 });
             } catch (SQLException e) {
@@ -425,12 +448,28 @@ public class SettingsController implements Initializable {
         }
     }
 
-    private String getFullName(String firstname, String lastname) {
-        String firstName = firstname == null ? "" : firstname.trim();
-        String lastName = lastname == null ? "" : lastname.trim();
-        String fullName = (firstName + " " + lastName).trim();
-        return fullName.isEmpty() ? "undefined" : fullName;
+    @FXML public void handle2FAButton(ActionEvent event) {
+        if(User.currentUser == null) return;
+        if(!Mailer.isEmail(User.currentUser.getContactInfo())) {
+            settingsMessageLabel.setText("To set up Google Auth 2FA, you need to link an email to your profile");
+            return;
+        }
+
+        try {
+            if(!Google2FAKey.isEmpty()) {
+                System.out.println("Shemodis?");
+                Utils.gAuthCheckState = 1;
+                User.currentUser.setTotpKey(Google2FAKey);
+                Utils.changeScene(event, "gauth-check");
+            }
+            else {
+                Utils.changeScene(event, "gauth-setup");
+            }
+        } catch (IOException e){
+            System.out.println(e.getMessage());
+        }
     }
+
 
     @FXML
     private void handleLogOutButton(ActionEvent event) {
@@ -446,6 +485,12 @@ public class SettingsController implements Initializable {
         }
     }
 
+    private String getFullName(String firstname, String lastname) {
+        String firstName = firstname == null ? "" : firstname.trim();
+        String lastName = lastname == null ? "" : lastname.trim();
+        String fullName = (firstName + " " + lastName).trim();
+        return fullName.isEmpty() ? "undefined" : fullName;
+    }
 
     private String getDisplayName() {
         User user = User.currentUser;
@@ -465,6 +510,5 @@ public class SettingsController implements Initializable {
 
         loadMySettings();
         loadBlockedUsers();
-
     }
 }

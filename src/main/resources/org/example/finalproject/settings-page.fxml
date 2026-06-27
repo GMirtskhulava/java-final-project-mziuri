@@ -34,57 +34,135 @@
         </VBox>
     </left>
     <center>
-        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="feed-scrollpane" vbarPolicy="AS_NEEDED"><content><VBox spacing="20.0" styleClass="main-content-container"><children>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
+        <content>
+        <VBox spacing="20.0" styleClass="main-content-container">
+        <children>
             <Label styleClass="form-title" text="Account Settings" />
-            <VBox spacing="15.0" styleClass="card">
+
+            <HBox spacing="20.0">
                 <children>
-                    <Label styleClass="settings-group-title" text="Profile" />
-                    <HBox spacing="10.0">
+
+                    <!-- LEFT COLUMN -->
+                    <VBox spacing="15.0" styleClass="card" HBox.hgrow="ALWAYS">
                         <children>
-                            <VBox spacing="5.0" HBox.hgrow="ALWAYS"><children><Label style="-fx-font-weight: bold;" styleClass="label-light" text="First name" /><TextField fx:id="firstnameField" maxWidth="1.7976931348623157E308" styleClass="text-field" /></children></VBox>
-                            <VBox spacing="5.0" HBox.hgrow="ALWAYS"><children><Label style="-fx-font-weight: bold;" styleClass="label-light" text="Last name" /><TextField fx:id="lastnameField" maxWidth="1.7976931348623157E308" styleClass="text-field" /></children></VBox>
-                        </children>
-                    </HBox>
-                    <VBox spacing="5.0">
-                        <children>
-                            <Label style="-fx-font-weight: bold;" styleClass="label-light" text="Gender" />
-                            <HBox spacing="20.0">
+                            <Label styleClass="settings-group-title" text="Profile" />
+
+                            <VBox spacing="5.0">
                                 <children>
-                                    <RadioButton fx:id="maleGenderRB" mnemonicParsing="false" text="Male">
-                                        <toggleGroup><ToggleGroup fx:id="genderGroup" /></toggleGroup>
-                                    </RadioButton>
-                                    <RadioButton fx:id="femaleGenderRB" mnemonicParsing="false" text="Female" toggleGroup="$genderGroup" />
+                                    <Label style="-fx-font-weight: bold;" styleClass="label-light" text="First name" />
+                                    <TextField fx:id="firstnameField" maxWidth="1.7976931348623157E308" styleClass="text-field" />
+                                </children>
+                            </VBox>
+
+                            <VBox spacing="5.0">
+                                <children>
+                                    <Label style="-fx-font-weight: bold;" styleClass="label-light" text="Last name" />
+                                    <TextField fx:id="lastnameField" maxWidth="1.7976931348623157E308" styleClass="text-field" />
+                                </children>
+                            </VBox>
+
+                            <VBox spacing="5.0">
+                                <children>
+                                    <Label style="-fx-font-weight: bold;" styleClass="label-light" text="Gender" />
+                                    <HBox spacing="20.0">
+                                        <children>
+                                            <RadioButton fx:id="maleGenderRB" mnemonicParsing="false" text="Male">
+                                                <toggleGroup>
+                                                    <ToggleGroup fx:id="genderGroup" />
+                                                </toggleGroup>
+                                            </RadioButton>
+                                            <RadioButton fx:id="femaleGenderRB" mnemonicParsing="false" text="Female" toggleGroup="$genderGroup" />
+                                        </children>
+                                    </HBox>
+                                </children>
+                            </VBox>
+
+                            <VBox spacing="5.0">
+                                <children>
+                                    <Label style="-fx-font-weight: bold;" styleClass="label-light" text="Birthdate" />
+                                    <DatePicker fx:id="birthDateField" maxWidth="1.7976931348623157E308" promptText="Select birthdate" />
+                                </children>
+                            </VBox>
+
+                            <VBox spacing="5.0">
+                                <children>
+                                    <Label style="-fx-font-weight: bold;" styleClass="label-light" text="Email or phone" />
+                                    <TextField fx:id="contactInfoField" maxWidth="1.7976931348623157E308" styleClass="text-field" />
+                                </children>
+                            </VBox>
+
+                            <VBox spacing="5.0">
+                                <children>
+                                    <Label style="-fx-font-weight: bold;" styleClass="label-light" text="Bio" />
+                                    <TextField fx:id="bioField" maxWidth="1.7976931348623157E308" promptText="Short bio" styleClass="text-field" />
+                                </children>
+                            </VBox>
+                        </children>
+
+                        <padding>
+                            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                        </padding>
+                    </VBox>
+
+                    <!-- RIGHT COLUMN -->
+                    <VBox spacing="15.0" styleClass="card" HBox.hgrow="ALWAYS">
+                        <children>
+                            <Label styleClass="settings-group-title" text="Privacy" />
+
+                            <CheckBox fx:id="hideContactInfoCheckBox" text="Hide contact info from other users" />
+                            <CheckBox fx:id="friendListPrivateCheckBox" text="Make friend list private" />
+                            <CheckBox fx:id="messagesFriendsOnlyCheckBox" text="Only friends can message me" />
+                              <CheckBox fx:id="google2FAcheckbox" text="Google 2FA Authentication" textFill="#00279a" />
+
+                            <Separator prefWidth="20.0" />
+
+                            <Label styleClass="settings-group-title" text="Blocked users" />
+                            <VBox fx:id="blockedUsersContainer" spacing="10.0" />
+
+                            <Separator prefWidth="20.0" />
+
+                            <Label styleClass="settings-group-title" text="Change password" />
+
+                            <VBox spacing="5.0">
+                                <children>
+                                    <Label style="-fx-font-weight: bold;" styleClass="label-light" text="New password" />
+                                    <PasswordField fx:id="passwordField" maxWidth="1.7976931348623157E308" promptText="Leave empty if you do not want to change it" />
+                                </children>
+                            </VBox>
+
+                            <VBox spacing="5.0">
+                                <children>
+                                    <Label style="-fx-font-weight: bold;" styleClass="label-light" text="Confirm password" />
+                                    <PasswordField fx:id="confirmPasswordField" maxWidth="1.7976931348623157E308" />
+                                </children>
+                            </VBox>
+
+                            <Label fx:id="settingsMessageLabel" minHeight="18.0" styleClass="label-error" wrapText="true" />
+
+                            <HBox spacing="10.0">
+                                <children>
+                                    <Button mnemonicParsing="false" onAction="#handleSaveButton" style="-fx-padding: 10 25 10 25;" styleClass="btn-primary" text="Save Changes" />
+                                    <Button mnemonicParsing="false" onAction="#handleDeleteAccountButton" style="-fx-padding: 10 25 10 25;" styleClass="btn-logout" text="Delete account" />
+                              <Button fx:id="setup2FAButton" mnemonicParsing="false" onAction="#handle2FAButton" style="-fx-padding: 10 25 10 25;" styleClass="btn-2fa" text="Set Up 2FA" />
                                 </children>
                             </HBox>
                         </children>
+
+                        <padding>
+                            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                        </padding>
                     </VBox>
-                    <VBox spacing="5.0"><children><Label style="-fx-font-weight: bold;" styleClass="label-light" text="Birthdate" /><DatePicker fx:id="birthDateField" maxWidth="400.0" promptText="Select birthdate" /></children></VBox>
-                    <VBox spacing="5.0"><children><Label style="-fx-font-weight: bold;" styleClass="label-light" text="Email or phone" /><TextField fx:id="contactInfoField" prefWidth="400.0" styleClass="text-field" /></children></VBox>
-                    <VBox spacing="5.0"><children><Label style="-fx-font-weight: bold;" styleClass="label-light" text="Bio" /><TextField fx:id="bioField" prefWidth="400.0" promptText="Short bio" styleClass="text-field" /></children></VBox>
-                    <Separator prefWidth="20.0" />
-                    <Label styleClass="settings-group-title" text="Privacy" />
-                    <CheckBox fx:id="hideContactInfoCheckBox" text="Hide contact info from other users" />
-                    <CheckBox fx:id="friendListPrivateCheckBox" text="Make friend list private" />
-                    <CheckBox fx:id="messagesFriendsOnlyCheckBox" text="Only friends can message me" />
-                    <Separator prefWidth="20.0" />
-                    <Label styleClass="settings-group-title" text="Blocked users" />
-                    <VBox fx:id="blockedUsersContainer" spacing="10.0" />
-                    <Separator prefWidth="20.0" />
-                    <Label styleClass="settings-group-title" text="Change password" />
-                    <VBox spacing="5.0"><children><Label style="-fx-font-weight: bold;" styleClass="label-light" text="New password" /><PasswordField fx:id="passwordField" prefWidth="400.0" promptText="Leave empty if you do not want to change it" /></children></VBox>
-                    <VBox spacing="5.0"><children><Label style="-fx-font-weight: bold;" styleClass="label-light" text="Confirm password" /><PasswordField fx:id="confirmPasswordField" prefWidth="400.0" /></children></VBox>
-                    <Label fx:id="settingsMessageLabel" minHeight="18.0" styleClass="label-error" wrapText="true" />
-                    <Separator prefWidth="20.0" />
-                    <HBox spacing="10.0">
-                        <children>
-                            <Button mnemonicParsing="false" onAction="#handleSaveButton" style="-fx-padding: 10 25 10 25;" styleClass="btn-primary" text="Save Changes" />
-                            <Button mnemonicParsing="false" onAction="#handleDeleteAccountButton" style="-fx-padding: 10 25 10 25;" styleClass="btn-logout" text="Delete account" />
-                        </children>
-                    </HBox>
+
                 </children>
-                <padding><Insets bottom="20.0" left="20.0" right="20.0" top="20.0" /></padding>
-            </VBox>
-        </children><padding><Insets bottom="30.0" left="25.0" right="25.0" top="25.0" /></padding></VBox></content></ScrollPane>
+            </HBox>
+        </children>
+
+        <padding>
+            <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+        </padding>
+        </VBox>
+        </content>
+        </ScrollPane>
     </center>
 </BorderPane>
-
