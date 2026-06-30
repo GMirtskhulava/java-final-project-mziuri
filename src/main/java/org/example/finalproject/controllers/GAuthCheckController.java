@@ -1,10 +1,10 @@
-package org.example.finalproject;
+package org.example.finalproject.controllers;
 
-import com.mysql.cj.x.protobuf.MysqlxPrepare;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import org.example.finalproject.*;
 
 import java.io.IOException;
 import java.net.URL;

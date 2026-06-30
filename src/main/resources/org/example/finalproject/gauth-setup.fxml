@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox prefHeight="675.0" prefWidth="1200.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.finalproject.SetupGAuthController">
+<HBox prefHeight="675.0" prefWidth="1200.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.finalproject.controllers.SetupGAuthController">
     <children>
 
         <VBox alignment="CENTER" prefWidth="350.0" styleClass="left-pane" HBox.hgrow="ALWAYS">

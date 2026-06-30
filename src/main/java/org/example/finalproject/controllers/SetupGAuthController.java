@@ -1,4 +1,4 @@
-package org.example.finalproject;
+package org.example.finalproject.controllers;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -9,6 +9,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import org.example.finalproject.GoogleAuth;
+import org.example.finalproject.MySQL;
+import org.example.finalproject.User;
+import org.example.finalproject.Utils;
 
 import java.io.IOException;
 import java.net.URL;
