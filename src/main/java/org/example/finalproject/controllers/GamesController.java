@@ -16,6 +16,7 @@ import org.example.finalproject.MySQL;
 import org.example.finalproject.User;
 import org.example.finalproject.Utils;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
@@ -145,6 +146,15 @@ public class GamesController implements Initializable {
         String lastName = lastname == null ? "" : lastname.trim();
         String fullName = (firstName + " " + lastName).trim();
         return fullName.isEmpty() ? "undefined" : fullName;
+    }
+
+    @FXML
+    public void handleCreateOwnGame(ActionEvent event) {
+        try {
+            Utils.changeScene(event, "developer-page");
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override

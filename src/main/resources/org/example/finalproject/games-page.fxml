@@ -60,7 +60,16 @@
             <content>
                 <VBox spacing="20.0" styleClass="main-content-container">
                     <children>
-                        <Label styleClass="form-title" text="Games" />
+                  <HBox prefHeight="38.0" prefWidth="915.0">
+                     <children>
+                              <Label prefHeight="32.0" prefWidth="145.0" styleClass="form-title" text="Games" />
+                        <VBox alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="833.0">
+                           <children>
+                              <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#handleCreateOwnGame" text="Create Own Game" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
                         <VBox spacing="15.0" styleClass="card">
                             <children>
                                 <Label styleClass="settings-group-title" text="Choose game" />

@@ -18,6 +18,7 @@ public class Utils {
     public static int profileUserID = 0;
     public static int friendsUserID = 0;
     public static int messageUserID = 0;
+    public static int appID = 0;
 
     public static int gAuthCheckState = 0;
 

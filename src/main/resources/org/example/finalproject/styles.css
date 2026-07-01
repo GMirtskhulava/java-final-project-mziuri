@@ -386,3 +386,81 @@
     -fx-border-color: transparent;
     -fx-border-radius: 15;
 }
+
+
+.developer-dashboard-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1b4d3e;
+}
+
+.developer-dashboard-message {
+    -fx-font-size: 14px;
+    /* -fx-font-weight: bold; */
+    -fx-text-fill: #444444;
+}
+
+.code-area {
+    -fx-background-color: #0f2e24;
+    -fx-text-fill: #eaf8f6;
+    -fx-font-family: "Consolas", "Courier New", monospace;
+    -fx-font-size: 14px;
+    -fx-border-color: #2ec4b6;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+}
+
+.code-area .content {
+    -fx-background-color: #0f2e24;
+}
+
+.code-area:focused {
+    -fx-border-color: #2ec4b6;
+    -fx-border-width: 1.5;
+}
+
+.status-draft {
+    -fx-text-fill: #d97706;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.status-reviewing {
+    -fx-text-fill: #2563eb;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.status-confirmed {
+    -fx-text-fill: #059669;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.btn-secondary-bordered {
+    -fx-background-color: transparent;
+    -fx-border-color: #2ec4b6;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-text-fill: #2ec4b6;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-padding: 10 0 10 0;
+}
+
+.btn-secondary-bordered:hover {
+    -fx-background-color: #eaf8f6;
+}
+
+
+.developer-applist-item {
+    -fx-background-color: #257c34;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-text-fill: white;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}

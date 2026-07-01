@@ -117,6 +117,15 @@ public class MySQL {
                 "REFERENCES users(id)" +
                 ");");
 
+        st.addBatch("CREATE TABLE IF NOT EXISTS developer_apps (" +
+                "id INT NOT NULL PRIMARY KEY AUTO_INCREMENT," +
+                "userID INT NOT NULL," +
+                "appName VARCHAR(32) NOT NULL DEFAULT 'New app'," +
+                "status INT NOT NULL DEFAULT 0," +
+                "code TEXT," +
+                "CONSTRAINT fKey_apps_receiverID FOREIGN KEY(userID) " +
+                "REFERENCES users(id)" +
+                ");");
 
         int[] result = st.executeBatch();
 //

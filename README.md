@@ -65,8 +65,8 @@ At first launch, app opens the MySQL configuration screen. Enter port, user, and
 - Messages: chat list, direct chat, unread counters, seen status, pinned chats, automatic polling for new messages.
 - Search: search people and posts, open profiles, send friend requests.
 - Settings: edit profile, password, privacy options, blocked users, account deletion, connect account to Google Authenticator wih QRcode (2FA security system)
-- Games: Pong game and leaderboard based on total user score.
-
+- Games: Pong game and leaderboard based on total user score, Create own game
+- developer page: Create own app (Game on JavaFX). Edit app name, code, send on review.
 
 - ავტორიზაცია: ავტორიზაცია, რეგისტრაცია, პაროლის აღდგენა მეილის კოდით, ტოკენები სესიების აღსადგენად, 2FA ავტორიზაცია (თუ ჩართულია პარამეტრებში)
 - მთავარი: პოსტის შექმნა, პოსტებისა და გაზიარებების ნახვა, მოწონება/დაწუნება, პოსტის გაზიარება, საკუთარი პოსტების (მათ შორის გაზიარებულის პოსტების) წაშლა.
@@ -75,7 +75,8 @@ At first launch, app opens the MySQL configuration screen. Enter port, user, and
 - შეტყობინებები: ჩატების სია, წაუკითხავი მესიჯების რაოდენობა, seen სტატუსი, აპინული ჩატები, ახალი შეტყობინებების LIVE მიღება.
 - ძიება: ადამიანებისა და პოსტების ძიება "გასაღები" სიტყვით, პროფილის გახსნა, მეგობრობის გაგზავნა.
 - პარამეტრები: პროფილის, პაროლისა და კონფიდენციალურობის პარამეტრების შეცვლა, დაბლოკილი მომხმარებლების მართვა, ანგარიშის წაშლა, Google Authenticator დაკავშირება QR კოდით(2FA დაცვის სისტემა).
-- თამაშები: Pong თამაში და leaderboard.
+- თამაშები: Pong თამაში და leaderboard. საკუთარი თამაშის შექმნა
+- developer გვერდი: საკუთარი აპლიკაციის (თამაშის) შექმნა. შექმნილი აპლიკაციის სახელის რედაქტირება, კოდის დაწერა და 'განხივლაზე' გაგზავნა. 
 
 ## Function Guide / ფუნქციების აღწერა
 
