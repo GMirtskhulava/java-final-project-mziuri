@@ -1,4 +1,4 @@
-package org.example.finalproject;
+package org.example.finalproject.controllers;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -8,6 +8,9 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import org.example.finalproject.MySQL;
+import org.example.finalproject.User;
+import org.example.finalproject.Utils;
 
 import java.io.IOException;
 import java.net.URL;

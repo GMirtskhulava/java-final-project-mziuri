@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-<BorderPane prefHeight="675.0" prefWidth="1200.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.finalproject.DevelopersController">
+<BorderPane prefHeight="675.0" prefWidth="1200.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.finalproject.controllers.DevelopersController">
     <top>
         <HBox alignment="CENTER_LEFT" prefHeight="65.0" styleClass="navbar">
             <children>
